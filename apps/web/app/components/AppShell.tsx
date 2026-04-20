@@ -1,38 +1,28 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { Suspense } from "react";
+import { SidebarNav } from "./SidebarNav";
 
-const NAV = [
-  { href: "/today", label: "Today" },
-  { href: "/week", label: "Week" },
-  { href: "/focus", label: "Focus" },
-  { href: "/insights", label: "Insights" },
-  { href: "/settings", label: "Settings" }
-] as const;
+function SidebarFallback() {
+  return (
+    <aside className="mt-sidebar">
+      <span className="mt-brand" style={{ cursor: "default" }}>
+        mindTrack
+      </span>
+      <nav className="mt-nav" aria-label="Main" aria-busy="true">
+        <span className="mt-muted" style={{ padding: "0.5rem 0.65rem", fontSize: "0.9rem" }}>
+          Loading menu…
+        </span>
+      </nav>
+    </aside>
+  );
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
-
   return (
     <div className="mt-app">
-      <aside className="mt-sidebar">
-        <Link href="/today" className="mt-brand">
-          mindTrack
-        </Link>
-        <nav className="mt-nav" aria-label="Main">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={pathname === item.href ? "mt-nav-active" : undefined}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </aside>
+      <Suspense fallback={<SidebarFallback />}>
+        <SidebarNav />
+      </Suspense>
       <div className="mt-main">{children}</div>
     </div>
   );
