@@ -16,6 +16,8 @@
 
 ## Next
 
-- create API endpoints for daily plans
-- add data validation for time block overlap
-- connect web "Today" page to API
+- [x] create API endpoints for daily plans
+- [x] add data validation for time block overlap
+- [x] connect web "Today" page to API
+
+See `docs/day2.md` for Day 2 setup (seed, users, CORS, planner UI).
