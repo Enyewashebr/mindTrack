@@ -2,6 +2,7 @@ import cors from "@fastify/cors";
 import { Prisma } from "@prisma/client";
 import Fastify from "fastify";
 import { ZodError } from "zod";
+import { registerFocusSessionRoutes } from "./routes/focusSessions.js";
 import { registerPlanRoutes } from "./routes/plans.js";
 import { registerUserRoutes } from "./routes/users.js";
 
@@ -37,6 +38,7 @@ async function buildApp() {
   });
 
   registerPlanRoutes(app);
+  registerFocusSessionRoutes(app);
   registerUserRoutes(app);
 
   return app;

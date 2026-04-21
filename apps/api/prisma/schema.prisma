@@ -18,6 +18,11 @@ enum TaskStatus {
   DONE
 }
 
+enum FocusSessionStatus {
+  ACTIVE
+  COMPLETED
+}
+
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -25,7 +30,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  plans Plan[]
+  plans         Plan[]
+  focusSessions FocusSession[]
 }
 
 model Plan {
@@ -63,5 +69,22 @@ model Task {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  timeBlock TimeBlock @relation(fields: [timeBlockId], references: [id], onDelete: Cascade)
+  timeBlock      TimeBlock      @relation(fields: [timeBlockId], references: [id], onDelete: Cascade)
+  focusSessions  FocusSession[]
+}
+
+model FocusSession {
+  id         String             @id @default(cuid())
+  userId     String
+  taskId     String
+  status     FocusSessionStatus @default(ACTIVE)
+  startedAt  DateTime           @default(now())
+  endedAt    DateTime?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
 }
